@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M Sampriyan | Engineering Portfolio</title>
+  
+  <!-- Premium High-Contrast Font Architecture - FIXED LINK BUG -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Global Color Tokens & System Themes */
+    :root {
+      --bg-color: #02040a; /* Main page background remains untouched */
+      
+      /* Task 3: Made the text container backgrounds and text colors lighter/brighter for enhanced contrast */
+      --card-bg: rgba(30, 41, 59, 0.85); /* Significantly lighter slate-blue card background for contrast */
+      --card-border: rgba(255, 255, 255, 0.25); 
+      --text-main: #ffffff; /* Ultra-bright crisp white text */
+      --text-muted: #f8fafc; /* Lighter, highly legible off-white text */
+      
+      --timeline-line: #475569;
+      
+      /* Vivid Neon Accent Profiles */
+      --hero-accent: #00f0ff;       
+      --education-accent: #fbbf24;  
+      --skills-accent: #c084fc;     
+      --competencies-accent: #34d399; 
+
+      --grid-pattern: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+
+    [data-theme="light"] {
+      --bg-color: #ffffff; 
+      --card-bg: rgba(241, 245, 249, 0.95);
+      --card-border: rgba(15, 23, 42, 0.18);
+      --text-main: #0f172a; 
+      --text-muted: #334155;
+      --timeline-line: #94a3b8;
+      
+      --hero-accent: #0284c7;       
+      --education-accent: #b45309;  
+      --skills-accent: #6d28d9;     
+      --competencies-accent: #047857; 
+
+      --grid-pattern: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-color);
+      background-image: var(--grid-pattern);
+      background-size: 40px 40px;
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.85;
+      font-size: 1.15rem; 
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 0 auto 160px auto;
+      padding: 0 20px;
+      scroll-margin-top: 120px;
+    }
+
+    #hero-section { --section-accent: var(--hero-accent); }
+    #education { --section-accent: var(--education-accent); }
+    #skills { --section-accent: var(--skills-accent); }
+    #competencies { --section-accent: var(--competencies-accent); }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(2, 4, 10, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    [data-theme="light"] header {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 22px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.65rem;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--hero-accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 35px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--hero-accent);
+    }
+
+    .theme-toggle {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 10px 20px;
+      border-radius: 30px;
+      color: var(--text-main);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--hero-accent);
+    }
+
+    h2 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: var(--text-main);
+    }
+
+    h2::after {
+      content: '';
+      flex-grow: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--card-border), transparent);
+    }
+
+    .typing-box {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--section-accent);
+      margin-bottom: 45px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.2em;
+      background-color: var(--section-accent);
+      margin-left: 6px;
+      animation: blink 0.7s infinite;
+    }
+
+    .hero {
+      padding: 120px 20px 80px 20px;
+    }
+
+    .hero h1 {
+      font-size: 5.8rem;
+      font-weight: 800;
+      letter-spacing: -3px;
+      margin-bottom: 15px;
+      line-height: 1.05;
+      background: linear-gradient(180deg, #ffffff 40%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    [data-theme="light"] .hero h1 {
+      background: linear-gradient(180deg, #0f172a 40%, #475569 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .typing-box {
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+    }
+
+    .personal-intro {
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      max-width: 950px;
+      margin-bottom: 50px;
+      font-weight: 500;
+      border-left: 4px solid var(--hero-accent);
+      padding-left: 20px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--hero-accent), #2563eb);
+      color: #02040a; 
+      font-weight: 800;
+      box-shadow: 0 4px 25px rgba(0, 240, 255, 0.3);
+      border: none;
+    }
+
+    [data-theme="light"] .btn-primary {
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 240, 255, 0.45);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--hero-accent);
+      transform: translateY(-2px);
+    }
+
+    .stat-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      margin-bottom: 60px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 35px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--education-accent);
+    }
+
+    .stat-num {
+      font-size: 3.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-left: 45px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 2px;
+      background: var(--timeline-line);
+    }
+
+    .timeline-node {
+      position: relative;
+      margin-bottom: 60px;
+    }
+
+    .timeline-node::before {
+      content: '';
+      position: absolute;
+      left: -52px; top: 8px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--bg-color);
+      border: 3px solid var(--education-accent);
+      z-index: 2;
+      box-shadow: 0 0 12px var(--education-accent);
+    }
+
+    .time-meta {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--education-accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .milestone-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 45px;
+      backdrop-filter: blur(12px);
+    }
+
+    .milestone-card:hover {
+      border-color: var(--education-accent);
+      box-shadow: 0 15px 35px rgba(251, 191, 36, 0.08);
+    }
+
+    .milestone-card h3 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .milestone-card h4 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .education-sub-section {
+      margin-top: 40px;
+      border-top: 1px dashed var(--card-border);
+      padding-top: 30px;
+    }
+
+    .education-sub-section h5 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--education-accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 22px;
+    }
+
+    .merits-display-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .merits-display-grid li {
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 4px solid var(--education-accent);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px; 
+      padding: 22px;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    [data-theme="light"] .merits-display-grid li {
+      background: rgba(0, 0, 0, 0.02);
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .merits-display-grid li strong {
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .achievements-list {
+      list-style-type: none;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .achievements-list li {
+      position: relative;
+      padding-left: 36px;
+      font-size: 1.25rem; 
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    .achievements-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--education-accent);
+      font-weight: 800;
+    }
+
+    .achievements-list li strong {
+      color: var(--text-main);
+      font-weight: 800;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .skill-group {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(12px);
+    }
+
+    .skill-group:hover {
+      border-color: var(--skills-accent);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(192, 132, 252, 0.08);
+    }
+
+    .skill-group h3 {
+      font-size: 1.6rem;
+      margin-bottom: 25px;
+      font-weight: 800;
+    }
+
+    .skill-item {
+      margin-bottom: 22px;
+    }
+
+    .skill-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .skill-bar-bg {
+      background: rgba(255, 255, 255, 0.12);
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .skill-bar-bg {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--skills-accent), #7c3aed);
+      border-radius: 5px;
+      width: 0;
+      transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+    }
+
+    .competency-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .comp-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(12px);
+    }
+
+    .comp-card:hover {
+      border-color: var(--competencies-accent);
+      box-shadow: 0 15px 35px rgba(52, 211, 153, 0.08);
+    }
+
+    .comp-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .comp-card p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 50px 20px;
+      text-align: center;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      backdrop-filter: blur(12px);
+      background: rgba(2, 4, 10, 0.4);
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    @media (max-width: 992px) {
+      .hero h1 { font-size: 4.5rem; }
+      .milestone-card { padding: 35px; }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 3.5rem; }
+      .nav-links a:not(.theme-toggle) { display: none; }
+      .timeline { padding-left: 20px; }
+      .timeline-node::before { left: -26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <header>
+    <nav class="nav-container" aria-label="Main Navigation">
+      <a href="#" class="logo">SAMPRIYAN<span>.</span></a>
+      <div class="nav-links">
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#competencies">Competencies</a>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle visual theme">Light Mode</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="hero" id="hero-section">
+    <section>
+      <h1>M Sampriyan</h1>
+      <div class="typing-box" aria-live="polite">
+        <span class="type-target" data-sentences='["CSIT Engineering Student.", "Data Systems Specialist.", "High-Achieving Team Leader."]'></span><span class="cursor" aria-hidden="true">&nbsp;</span>
+      </div>
+      
+      <p class="personal-intro">
+        A dedicated and results‑driven CSIT engineering student at REVA University, I combine academic excellence with proven leadership and a relentless drive to succeed. Hardworking and ambitious, I specialize in Python, C programming, SQL, and HTML while cultivating expertise in data systems and emerging intelligent technologies. My background in science competitions and leadership roles reflects my ability to excel under pressure, guide teams effectively, and deliver innovative solutions. Focused on continuous growth, I aim to leverage my technical skills and analytical capabilities to contribute meaningfully to forward‑looking technical environments.
+      </p>
+
+      <div class="cta-buttons">
+        <a href="mailto:sampriyan1327@gmail.com" class="btn btn-primary">Initiate Inquiry</a>
+        <a href="https://www.linkedin.com/in/sampriyan-mahendran-a60377384" target="_blank" rel="noopener" class="btn btn-secondary">View LinkedIn Profile</a>
+      </div>
+    </section>
+  </main>
+
+  <section id="education">
+    <h2>Education</h2>
+    <div class="typing-box" aria-live="polite">
+      <span class="type-target" data-sentences='["Chronological Records.", "Institutional Merits.", "Elected Student Governance."]'></span><span class="cursor" aria-hidden="true">&nbsp;</span>
+    </div>
+
+    <div class="stat-dashboard">
+      <div class="stat-card">
+        <div class="stat-num">96.32%</div>
+        <div class="stat-label">Class 10 Board Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Rank #2</div>
+        <div class="stat-label">Institutional Rank</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">8x</div>
+        <div class="stat-label">Total Championships</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3 Years</div>
+        <div class="stat-label">Elected Governance</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">#1</div>
+        <div class="stat-label">Best Cadet Award</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      
+      <div class="timeline-node">
+        <div class="time-meta">2025 – 2029 (Expected)</div>
+        <article class="milestone-card">
+          <h3>REVA University | Bengaluru, India</h3>
+          <h4>Bachelor of Technology (B.Tech) in Computer Science & Information Technology (CS&IT)</h4>
+          <ul class="achievements-list">
+            <li>Currently pursuing a rigorous engineering curriculum focused on Programming, Data systems and intelligent technologies.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="timeline-node">
+        <div class="time-meta">2023 – 2025</div>
+        <article class="milestone-card">
+          <h3>St. Joseph’s Pre-University College | Bengaluru, India</h3>
+          <h4>Pre-University Course (PUC) – Science</h4>
+          <ul class="achievements-list">
+            <li>Graduated with Distinction in Class 12.</li>
+            <li>Secured a podium finish in the Intra Pre University Quiz (2024).</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="timeline-node">
+        <div class="time-meta">Graduated: 2023</div>
+        <article class="milestone-card">
+          <h3>St. Joseph’s Indian High School | Bengaluru, India</h3>
+          <h4>Class 10 Milestone Summary</h4>
+          
+          <div class="education-sub-section">
+            <h5>Academic & Scholastic Merits</h5>
+            <ul class="merits-display-grid">
+              <li>
+                <strong>Top-Tier Board Performance</strong>
+                Secured an outstanding 96.32% in the final secondary regional board examinations.
+              </li>
+              <li>
+                <strong>Institutional Standing</strong>
+                Ranked second across the entire institution for academic results in the 2022 cohort alongside the official board score.
+              </li>
+              <li>
+                <strong>Institutional Nomination</strong>
+                Nominated for the premier institutional award of Best Outgoing Student of 2023.
+              </li>
+              <li>
+                <strong>Academic Merit (2017)</strong>
+                Honoured with the Academic Proficiency / Excellence Award for outstanding scholastic performance.
+              </li>
+              <li>
+                <strong>Academic Merit (2023)</strong>
+                Honoured with the Academic Proficiency / Excellence Award for superior performance across the final curriculum.
+              </li>
+              <li>
+                <strong>Academic Merit (2025)</strong>
+                Honoured with the Academic Proficiency / Excellence Award recognizing sustained educational distinction.
+              </li>
+            </ul>
+          </div>
+
+          <div class="education-sub-section">
+            <h5>Student Governance & Leadership</h5>
+            <ul class="achievements-list">
+              <li><strong>Elected Class Representative Tenure:</strong> Appointed by administration following a democratic student ballot to direct student operations for three consecutive years (2020–2023).</li>
+              <li><strong>Leadership Honors:</strong> Formally awarded the prestigious Best Representative Award in 2023 for organizational efficiency.</li>
+            </ul>
+          </div>
+
+          <div class="education-sub-section">
+            <h5>Military & Cadet Excellence</h5>
+            <ul class="achievements-list">
+              <li><strong>NCC Naval Wing Best Cadet Commission:</strong> Earned the distinguished ranking of Best Cadet (2022) within the combined Karnataka and Goa State Directorate.</li>
+            </ul>
+          </div>
+
+          <div class="education-sub-section">
+            <h5>Institutional & STEM Championships</h5>
+            <ul class="achievements-list">
+              <li><strong>Championship Title 2017:</strong> Secured the Overall Intra Class Championship title, coordinating classroom cohorts to strategic victories.</li>
+              <li><strong>Championship Title 2022:</strong> Secured the Overall Intra School Championship title by directing logistics and house strategies.</li>
+              <li><strong>Championship Title 2023:</strong> Successfully defended the title to claim consecutive back-to-back Overall Intra School Championships.</li>
+              <li><strong>Individual STEM Performance:</strong> Secured the Individual Championship in Science Model-Making Competitions at the Intra-School level for two consecutive years (2022–2023), proving strong structured technical aptitude.</li>
+              <li><strong>Team STEM Performance:</strong> Secured the Team Championship title in Science Model-Making Competitions at the Intra-School level for two consecutive years (2022–2023) through collaborative engineering solutions.</li>
+            </ul>
+          </div>
+
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Technical Skills</h2>
+    <div class="typing-box" aria-live="polite">
+      <span class="type-target" data-sentences='["Core Technical Proficiencies.", "Data Infrastructure Systems.", "Algorithmic Implementations."]'></span><span class="cursor" aria-hidden="true">&nbsp;</span>
+    </div>
+
+    <div class="skills-container">
+      <div class="skill-group">
+        <h3>Programming Languages</h3>
+        <div class="skill-item">
+          <div class="skill-info"><span>Python (Data & Automation)</span><span>98%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="98%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-info"><span>C Programming (Core Logic)</span><span>95%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="95%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-info"><span>HTML (Structural Markup)</span><span>99%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="99%"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Data Management</h3>
+        <div class="skill-item">
+          <div class="skill-info"><span>SQL Structured Queries</span><span>97%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="97%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-info"><span>Oracle Relational Systems</span><span>94%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="94%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-info"><span>Information Architecture Design</span><span>95%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="95%"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Analytical Tools</h3>
+        <div class="skill-item">
+          <div class="skill-info"><span>Microsoft Excel (Data Analytics)</span><span>96%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="96%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-info"><span>Technical Documentation (Word)</span><span>97%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="97%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-info"><span>Project Presentations (PowerPoint)</span><span>99%</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="99%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="competencies">
+    <h2>Soft Skills</h2>
+    <div class="typing-box" aria-live="polite">
+      <span class="type-target" data-sentences='["Operational Capabilities.", "Leadership Metrics.", "Strategic Communication Platforms."]'></span><span class="cursor" aria-hidden="true">&nbsp;</span>
+    </div>
+
+    <div class="competency-grid">
+      <div class="comp-card">
+        <h3>Elite Leadership</h3>
+        <p>Dynamic, multi-year track record in student governance and team management, with a proven ability to coordinate diverse groups and drive competitive, strategic success.</p>
+      </div>
+      <div class="comp-card">
+        <h3>Impactful Communication</h3>
+        <p>Articulate presenter and collaborative mentor capable of translating technical objectives into clear, actionable goals while fostering strong cross-functional teamwork.</p>
+      </div>
+      <div class="comp-card">
+        <h3>High-Achieving Execution</h3>
+        <p>A relentlessly hardworking and ambitious professional committed to engineering excellence, operational efficiency, and delivering high-impact technical solutions.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 M Sampriyan | High Performance Portfolio Architecture.</p>
+  </footer>
+
+  <script>
+    let activeTheme = 'dark';
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeBtn = document.getElementById('themeBtn');
+      const currentTheme = html.getAttribute('data-theme');
+      
+      if (currentTheme === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        themeBtn.innerText = 'Dark Mode';
+        activeTheme = 'light';
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        themeBtn.innerText = 'Light Mode';
+        activeTheme = 'dark';
+      }
+    }
+
+    function initDynamicBackgroundEngine() {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+      
+      const nodes = [];
+      const nodeCount = Math.min(70, Math.floor((width * height) / 22000)); 
+      
+      class DataNode {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.5;
+          this.vy = (Math.random() - 0.5) * 0.5;
+          this.radius = Math.random() * 2.5 + 1.5; 
+        }
+        
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = activeTheme === 'dark' ? 'rgba(0, 240, 255, 0.45)' : 'rgba(2, 132, 199, 0.3)';
+          ctx.fill();
+        }
+      }
+      
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push(new DataNode());
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        for (let i = 0; i < nodes.length; i++) {
+          nodes[i].update();
+          nodes[i].draw();
+          
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 150) {
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              const alpha = (1 - distance / 150) * 0.16;
+              ctx.strokeStyle = activeTheme === 'dark' ? `rgba(192, 132, 252, ${alpha})` : `rgba(109, 40, 217, ${alpha})`;
+              ctx.lineWidth = 1.2;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+      
+      animate();
+    }
+
+    function initGlobalTypingEngine() {
+      const targets = document.querySelectorAll('.type-target');
+      
+      targets.forEach((target) => {
+        const sentences = JSON.parse(target.getAttribute('data-sentences'));
+        let currentSentenceIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+
+        function type() {
+          const currentFullText = sentences[currentSentenceIdx];
+          
+          if (isDeleting) {
+            target.textContent = currentFullText.substring(0, charIdx - 1);
+            charIdx--;
+          } else {
+            target.textContent = currentFullText.substring(0, charIdx + 1);
+            charIdx++;
+          }
+
+          let typeSpeed = isDeleting ? 30 : 70;
+
+          if (!isDeleting && charIdx === currentFullText.length) {
+            typeSpeed = 2200; 
+            isDeleting = true;
+          } else if (isDeleting && charIdx === 0) {
+            isDeleting = false;
+            currentSentenceIdx = (currentSentenceIdx + 1) % sentences.length;
+            typeSpeed = 400; 
+          }
+
+          setTimeout(type, typeSpeed);
+        }
+        
+        setTimeout(type, Math.random() * 500); 
+      });
+    }
+
+    function triggerSkillMeters() {
+      const fills = document.querySelectorAll('.skill-bar-fill');
+      fills.forEach(bar => {
+        const targetPercent = bar.getAttribute('data-percent');
+        if(targetPercent) {
+          bar.style.width = targetPercent;
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initGlobalTypingEngine();
+      initDynamicBackgroundEngine();
+      setTimeout(triggerSkillMeters, 200);
+    });
+  </script>
+</body>
+</html>
